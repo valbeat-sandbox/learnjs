@@ -11,13 +11,6 @@ learnjs.appOnReady = function () {
     learnjs.showView(window.location.hash);
 };
 
-learnjs.problemView = function(problemNumber) {
-    var view = $('.templates .problem-view').clone();
-    var title = 'Problem #' + problemNumber + ' Coming soon!';
-    view.find('.title').text(title);
-    return view;
-};
-
 learnjs.showView = function(hash) {
     var routes = {
         '#problem' : learnjs.problemView
@@ -28,4 +21,11 @@ learnjs.showView = function(hash) {
     if (viewFn) {
         $('.view-container').empty().append(viewFn(hashParts[1]));
     }
+};
+
+learnjs.problemView = function(problemNumber) {
+    var view = $('.templates .problem-view').clone();
+    var title = 'Problem #' + problemNumber + ' Coming soon!';
+    view.find('.title').text(title);
+    return view;
 };
