@@ -2,14 +2,16 @@
 
 var learnjs = {};
 
-learnjs.problemView = function() {
-    return $('<div class="problem-view">').text('Comming soon!');
+learnjs.problemView = function(problemNumber) {
+    var title = 'Problem #' + problemNumber + ' Coming soon!';
+    return $('<div class="problem-view">').text(title);
 };
 
 learnjs.showView = function(hash) {
     var routes = {
         '#problem' : learnjs.problemView
     };
+    // [0] => #action, [1] => problemNumber
     var hashParts = hash.split('-');
     var viewFn = routes[hashParts[0]];
     if (viewFn) {
