@@ -19,6 +19,14 @@ describe('problem View',function () {
         var view = learnjs.problemView('1');
         expect(view.find('.title').text()).toEqual('Problem #1 Coming soon!');
     });
+    it('show the description', function() {
+        var view = learnjs.problemView('1');
+        expect(view.find('[data-name="description"]').text()).toEqual('What is truth?');
+    });
+    it('shows the problem code', function () {
+        var view = learnjs.problemView('1');
+        expect(view.find('[data-name="code"]').text()).toEqual('function problem() { return __; }');
+    });
     it('invoke the router when loaded',function() {
         spyOn(learnjs, 'showView');
         learnjs.appOnReady();
