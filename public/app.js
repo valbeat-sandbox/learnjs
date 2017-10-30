@@ -3,6 +3,11 @@
 var learnjs = {};
 
 learnjs.appOnReady = function () {
+    // attach listener to window object's onhashchange event
+    window.onhashchange = function() {
+        learnjs.showView(window.location.hash);
+    };
+    // always executed the first one
     learnjs.showView(window.location.hash);
 };
 
