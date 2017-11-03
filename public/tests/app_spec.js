@@ -45,11 +45,17 @@ describe('answer section', function(){
         var problemData = learnjs.problems[0];
         expect(learnjs.checkAnswer(problemData,'true')).toEqual(true);
     });
+    it('show final problem link to randing page', function () {
+        var problemNum = learnjs.problems.length;
+        var view = learnjs.buildCorrectFlash(problemNum);
+        expect(view.find('a').attr('href')).toEqual('');
+    });
     it('can check a correct answer by hitting a button', function () {
         var view = learnjs.problemView('1');
         view.find('.answer').val('true');
         view.find('.check-btn').click();
         expect(view.find('.result span').text()).toEqual('Correct!');
+        expect(view.find('.result a').attr('href')).toEqual('#problem-2');
     });
     it('rejects an incorrect answer', function() {
         var view = learnjs.problemView('1');
