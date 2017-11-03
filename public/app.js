@@ -43,7 +43,9 @@ learnjs.problemView = function(data) {
     function checkAnswerClick() {
         var answer = view.find('.answer').val()
         if (learnjs.checkAnswer(problemData,answer)) {
-            learnjs.flashElement(resultFlash,'Correct!');
+            var correctFlash = $('.templates .correct-flash').clone();
+            correctFlash.find('a').attr('href','#problem-' + (problemNumber + 1));
+            learnjs.flashElement(resultFlash,correctFlash);
         } else {
             learnjs.flashElement(resultFlash,'Incorrect!');
         }

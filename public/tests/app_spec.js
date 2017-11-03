@@ -49,7 +49,7 @@ describe('answer section', function(){
         var view = learnjs.problemView('1');
         view.find('.answer').val('true');
         view.find('.check-btn').click();
-        expect(view.find('.result').text()).toEqual('Correct!');
+        expect(view.find('.result span').text()).toEqual('Correct!');
     });
     it('rejects an incorrect answer', function() {
         var view = learnjs.problemView('1');
