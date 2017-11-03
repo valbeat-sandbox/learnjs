@@ -13,5 +13,4 @@ def search(d, keys):
     else:
         return search(d[keys[0]], keys[1:])
 
-print search(doc, keys)
-
+print( search(doc, keys) )
