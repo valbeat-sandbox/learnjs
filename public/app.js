@@ -37,10 +37,29 @@ learnjs.showView = function(hash) {
 learnjs.problemView = function(data) {
     var problemNumber = parseInt(data, 10);
     var view = $('.templates .problem-view').clone();
-    var title = 'Problem #' + problemNumber + ' Coming soon!';
-    view.find('.title').text(title);
-    learnjs.applyObject(learnjs.problems[problemNumber - 1], view);
+    var problemData = learnjs.problems[problemNumber - 1];
+    var resultFlash = view.find('.result');
+
+    function checkAnswerClick() {
+        var answer = view.find('.answer').val()
+        if (learnjs.checkAnswer(problemData,answer)) {
+            resultFlash.text('Correct!');
+        } else {
+            resultFlash.text('Incorrect!');
+        }
+        return false;
+    }
+
+    view.find('.check-btn').click(checkAnswerClick);
+    view.find('.title').text('Problem #' + problemNumber + ' Coming soon!');
+    learnjs.applyObject(problemData, view);
     return view;
+};
+
+learnjs.checkAnswer = function (problemData,answer) {
+    // change the space to enter response and add code to call problem function
+    var test = problemData.code.replace('__',answer) + '; problem();';
+    return eval(test);
 };
 
 learnjs.applyObject = function(obj, elm) {
