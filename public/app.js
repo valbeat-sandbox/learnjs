@@ -43,9 +43,9 @@ learnjs.problemView = function(data) {
     function checkAnswerClick() {
         var answer = view.find('.answer').val()
         if (learnjs.checkAnswer(problemData,answer)) {
-            resultFlash.text('Correct!');
+            learnjs.flashElement(resultFlash,'Correct!');
         } else {
-            resultFlash.text('Incorrect!');
+            learnjs.flashElement(resultFlash,'Incorrect!');
         }
         return false;
     }
@@ -66,4 +66,11 @@ learnjs.applyObject = function(obj, elm) {
     for (var key in obj) {
         elm.find('[data-name="'+ key + '"]').text(obj[key]);
     }
+};
+
+learnjs.flashElement = function(elm, content) {
+    elm.fadeOut('fast', function () {
+        elm.html(content);
+        elm.fadeIn();
+    });
 };
