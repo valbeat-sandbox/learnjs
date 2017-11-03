@@ -25,7 +25,8 @@ learnjs.appOnReady = function () {
 learnjs.showView = function(hash) {
     var routes = {
         '': learnjs.landingView,
-        '#problem' : learnjs.problemView
+        '#': learnjs.landingView,
+        '#problem' : learnjs.problemView,
     };
     // [0] => #action, [1] => problemNumber
     var hashParts = hash.split('-');
