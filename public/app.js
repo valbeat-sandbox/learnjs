@@ -113,3 +113,7 @@ learnjs.triggerEvent = function (name,args) {
 learnjs.template = function (name) {
     return $('.templates .' + name).clone();
 };
+
+function googleSignIn() {
+    console.log(arguments);
+}
