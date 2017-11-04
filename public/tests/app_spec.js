@@ -1,6 +1,6 @@
 describe('LearnJS', function() {
     describe('changing views', function () {
-        it('can show the landing page view when there is no hash', function(){
+        it('can show the landing view when there is no hash', function(){
             learnjs.showView('');
             expect($('.view-container .landing-view').length).toEqual(1);
         });
@@ -8,17 +8,24 @@ describe('LearnJS', function() {
             learnjs.showView('#problem-1');
             expect($('.view-container .problem-view').length).toEqual(1);
         });
-        it('can show a profile view',function () {
+        it('can show the profile view',function () {
             learnjs.showView('#profile');
             expect($('.view-container .profile-view').length).toEqual(1);
         });
+        // if add routes, then add test here
+
+        it('triggers removingView event when removing the view', function() {
+            spyOn(learnjs, 'triggerEvent');
+            learnjs.showView('#problem-1');
+            expect(learnjs.triggerEvent).toHaveBeenCalledWith('removingView',[]);
+        });
+    });
+    describe('problem View',function () {
         it('passes the hash view parameter to the view function', function(){
             spyOn(learnjs, 'problemView');
             learnjs.showView('#problem-42');
             expect(learnjs.problemView).toHaveBeenCalledWith('42');
         });
-    });
-    describe('problem View',function () {
         it('has a title that include the problem number', function(){
             var view = learnjs.problemView('1');
             expect(view.find('.title').text()).toEqual('Problem #1 Coming soon!');
