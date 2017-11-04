@@ -101,5 +101,25 @@ describe('LearnJS', function() {
             });
         });
     });
+
+    describe('google signIn callback',function() {
+        var user, profile;
+        beforeEach(function() {
+            var refreshPromise = new $.Deferred().resolve('COGNITO_ID').promise();
+            spyOn(learnjs, 'awsRefresh').and.returnValue(refreshPromise);
+            spyOn(AWS, 'CognitoIdentityCredentials');
+            user = jasmine.createSpyObj('user', ['getAuthResponse','getBasicProfile']);
+            user.getAuthResponse.and.returnValue({id_token: 'GOOGLE_ID'});
+
+            profile = jasmine.createSpyObj('profile', ['getEmail']);
+            profile.getEmail.and.returnValue('foo@bar.com');
+            user.getBasicProfile.and.returnValue(profile);
+            googleSignIn(user);
+        });
+
+        it('sets the AWS region', function () {
+            expect(AWS.config.region).toEqual('us-east-1');
+        });
+    });
 });
 
