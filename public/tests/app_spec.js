@@ -116,9 +116,57 @@ describe('LearnJS', function() {
             user.getBasicProfile.and.returnValue(profile);
             googleSignIn(user);
         });
-
         it('sets the AWS region', function () {
             expect(AWS.config.region).toEqual('us-east-1');
+        });
+        it('sets the identity pool ID and Google ID token', function() {
+            expect(AWS.CognitoIdentityCredentials).toHaveBeenCalledWith({
+                IdentityPoolId: learnjs.poolId,
+                Logins: {
+                    'accounts.google.com': 'GOOGLE_ID'
+                }
+            });
+        });
+        it('fetches the AWS credentials and resolved the deferred', function(done) {
+            learnjs.identity.done(function(identity) {
+                expect(identity.email).toEqual('foo@bar.com');
+                expect(identity.id).toEqual('COGNITO_ID');
+                done();
+            });
+        });
+
+        describe('refresh', function() {
+            var instanceSpy;
+            beforeEach(function() {
+                AWS.config.credentials = {params: {Logins: {}}};
+                var updateSpy = jasmine.createSpyObj('userUpdate', ['getAuthResponse']);
+                updateSpy.getAuthResponse.and.returnValue({id_token: "GOOGLE_ID"});
+                instanceSpy = jasmine.createSpyObj('instance', ['signIn']);
+                instanceSpy.signIn.and.returnValue(Promise.resolve(updateSpy));
+                var auth2Spy = jasmine.createSpyObj('auth2', ['getAuthInstance']);
+                auth2Spy.getAuthInstance.and.returnValue(instanceSpy);
+                window.gapi = { auth2: auth2Spy };
+            });
+
+            it('returns a promise when token is refreshed', function(done) {
+                learnjs.identity.done(function(identity) {
+                    identity.refresh().then(function() {
+                        expect(AWS.config.credentials.params.Logins).toEqual({
+                            'accounts.google.com': "GOOGLE_ID"
+                        });
+                        done();
+                    });
+                });
+            });
+
+            it('does not re-prompt for consent when refreshing the token in', function(done) {
+                learnjs.identity.done(function(identity) {
+                    identity.refresh().then(function() {
+                        expect(instanceSpy.signIn).toHaveBeenCalledWith({prompt: 'login'});
+                        done();
+                    });
+                });
+            });
         });
     });
 });

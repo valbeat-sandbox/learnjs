@@ -8,7 +8,7 @@ var learnjs = {
  * Promise経由でアクセスできるidentity
  * identityはどのログインプロパイダに依存することなくアクセスできる
  */
-learnjs.identitiy = new $.Deferred();
+learnjs.identity = new $.Deferred();
 
 learnjs.problems = [
     {
@@ -106,7 +106,7 @@ learnjs.problemView = function(data) {
  */
 learnjs.profileView = function() {
     var view = learnjs.template('profile-view');
-    learnjs.identitiy.done(function(identity){
+    learnjs.identity.done(function(identity){
         view.find('.email').text(identity.email);
     });
     return view;
@@ -244,7 +244,7 @@ function googleSignIn(googleUser) {
 
     // call awsRefresh method and resolve deferred
     learnjs.awsRefresh().then(function(id){
-        learnjs.identitiy.resolve({
+        learnjs.identity.resolve({
             id: id,
             email: googleUser.getBasicProfile().getEmail(),
             refresh: refresh
