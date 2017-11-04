@@ -41,7 +41,8 @@ learnjs.showView = function(hash) {
     var routes = {
         '': learnjs.landingView,
         '#': learnjs.landingView,
-        '#problem' : learnjs.problemView,
+        '#problem': learnjs.problemView,
+        '#profile': learnjs.profileView
     };
     // [0] => #action, [1] => problemNumber
     var hashParts = hash.split('-');
@@ -53,7 +54,7 @@ learnjs.showView = function(hash) {
 };
 
 /**
- * ランディングView
+ * ランディングページ
  * @returns {*|jQuery}
  */
 learnjs.landingView = function() {
@@ -61,7 +62,7 @@ learnjs.landingView = function() {
 };
 
 /**
- * 問題View
+ * 問題ページ
  * @param data
  * @returns {*|jQuery}
  */
@@ -96,6 +97,18 @@ learnjs.problemView = function(data) {
     }
 
     learnjs.applyObject(problemData, view);
+    return view;
+};
+
+/**
+ * プロフィールページ
+ * @returns {*|jQuery}
+ */
+learnjs.profileView = function() {
+    var view = learnjs.template('profile-view');
+    learnjs.identitiy.done(function(identity){
+        view.find('.email').text(identity.email);
+    });
     return view;
 };
 
