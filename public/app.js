@@ -215,7 +215,7 @@ function googleSignIn(googleUser) {
         // googleのid tokenを使い、認証オブジェクトを生成
         credentials: new AWS.CognitoIdentityCredentials({
             // identityのpoolIdはname space objectに保持
-            IdentitiyPoolId: learnjs.poolId,
+            IdentityPoolId: learnjs.poolId,
             Logins: {
                 // get id token by response object
                 'accounts.google.com': googleUser.getAuthResponse().id_token

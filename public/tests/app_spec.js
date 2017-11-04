@@ -75,5 +75,31 @@ describe('LearnJS', function() {
             expect(view.find('.result').text()).toEqual('Incorrect!');
         });
     });
+
+    describe('awsRefresh',function() {
+        var callbackArg, fakeCredentials;
+        beforeEach(function () {
+            fakeCredentials = jasmine.createSpyObj('creds', ['refresh']);
+            fakeCredentials.identityId = 'COGNITO_ID';
+            AWS.config.credentials = fakeCredentials;
+            fakeCredentials.refresh.and.callFake(function (cb) {
+                cb(callbackArg);
+            });
+        });
+
+        it('returns a promise that resolves on success', function (done) {
+            learnjs.awsRefresh().then(function (id) {
+                expect(fakeCredentials.identityId).toEqual('COGNITO_ID');
+            }).then(done, fail);
+        });
+
+        it('rejects the promise on a fail', function (done) {
+            callbackArg = 'error';
+            learnjs.awsRefresh().fail(function (err) {
+                expect(err).toEqual('error');
+                done();
+            });
+        });
+    });
 });
 
